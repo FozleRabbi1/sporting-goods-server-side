@@ -13,6 +13,19 @@ const getAllProducts = catchAsync(async (req, res) => {
   });
 });
 
+const getCategoryProducts = catchAsync(async (req, res) => {
+  const result = await ProductsServices.getCategoryProducts(
+    req?.params.category,
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Get All Products Successfully',
+    data: result,
+  });
+});
+
 export const productsControllers = {
   getAllProducts,
+  getCategoryProducts,
 };
