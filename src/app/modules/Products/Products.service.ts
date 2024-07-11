@@ -18,6 +18,19 @@ const getAllProducts = async () => {
 // };
 
 const getAllProductsFromDB = async (query: Record<string, unknown>) => {
+  // if (query?.rating) {
+  //   const ratingValue = parseFloat(query?.rating);
+  //   console.log('Parsed Rating Value:', ratingValue);
+
+  //   // Define a small tolerance for floating-point comparison
+  //   const tolerance = 0.1;
+
+  //   const result = await Product.find({
+  //     rating: { $gte: ratingValue - tolerance, $lte: ratingValue + tolerance },
+  //   });
+  //   return result;
+  // }
+
   if (query.searchTerm === '' && query.minPrice && query.maxPrice) {
     const result = Product.find({
       price: {
@@ -27,7 +40,9 @@ const getAllProductsFromDB = async (query: Record<string, unknown>) => {
     });
     return result;
   }
-  const courseQuery = new QueryBuilder(Product.find(), query)
+  const courseQuery = new QueryBuilder(Product.find(), {
+    searchTerm: query.searchTerm,
+  })
     .search(['name', 'brand'])
     .fields()
     .filter()
