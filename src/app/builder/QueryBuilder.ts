@@ -29,10 +29,27 @@ class QueryBuilder<T> {
   filter() {
     const queryObj = { ...this.query }; // copy query
     const excluedeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
-    excluedeFields.forEach((el) => delete queryObj[el]); // exat match করবে একমন filed রাখা হয়েছে(email)
+    excluedeFields.forEach((el) => delete queryObj[el]); // exat match করবে এমন filed রাখা হয়েছে(email)
     this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
     return this;
   }
+
+  // filter() {
+  //   const queryObj = { ...this.query }; // copy query
+  //   const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields'];
+  //   excludeFields.forEach((el) => delete queryObj[el]); // remove exact match fields
+
+  //   // Handle price range filtering
+  //   if (queryObj.minPrice && queryObj.maxPrice) {
+  //     queryObj.price = {
+  //       $gte: parseInt(queryObj.minPrice),
+  //       $lte: parseInt(queryObj.maxPrice),
+  //     };
+  //   }
+
+  //   this.modelQuery = this.modelQuery.find(queryObj as FilterQuery<T>);
+  //   return this;
+  // }
 
   sort() {
     const sort =
