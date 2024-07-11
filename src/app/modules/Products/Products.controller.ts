@@ -13,6 +13,16 @@ const getAllProducts = catchAsync(async (req, res) => {
   });
 });
 
+const getALlProductsFromDb = catchAsync(async (req, res) => {
+  const result = await ProductsServices.getAllProductsFromDB(req.query);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'get all Productssssss successFully',
+    data: result,
+  });
+});
+
 const getCategoryProducts = catchAsync(async (req, res) => {
   const result = await ProductsServices.getCategoryProducts(
     req?.params.category,
@@ -28,4 +38,5 @@ const getCategoryProducts = catchAsync(async (req, res) => {
 export const productsControllers = {
   getAllProducts,
   getCategoryProducts,
+  getALlProductsFromDb,
 };
