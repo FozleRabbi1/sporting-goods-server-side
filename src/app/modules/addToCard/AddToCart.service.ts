@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AddToCart } from './AddToCart.module';
 
-const addToCartIntoDB = async (payload) => {
+const addToCartIntoDB = async (payload: any) => {
   const { stockQuantity, ...rest } = payload;
   const newProduct = { ...rest };
   const isExists = await AddToCart.findOne({ mainId: payload.mainId });
@@ -29,8 +30,3 @@ export const addToCartServices = {
   addToCartIntoDB,
   getCartProductFromDB,
 };
-
-// const isExists = await AddToCart.findOne({ mainId: payload.mainId });
-// if(isExists){
-//   console.log(isExists);
-// }

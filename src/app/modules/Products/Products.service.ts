@@ -6,17 +6,6 @@ const getAllProducts = async () => {
   return result;
 };
 
-// const getAllProductsFromDB = async (query: Record<string, unknown>) => {
-//   const courseQuery = new QueryBuilder(Product.find(), query)
-//     .search(['name', 'brand'])
-//     .fields()
-//     .filter()
-//     .paginate()
-//     .sort();
-//   const result = await courseQuery.modelQuery;
-//   return result;
-// };
-
 const getAllProductsFromDB = async (query: Record<string, unknown>) => {
   if (query.searchTerm === '' && query.minPrice && query.maxPrice) {
     const result = Product.find({
