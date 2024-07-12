@@ -18,19 +18,6 @@ const getAllProducts = async () => {
 // };
 
 const getAllProductsFromDB = async (query: Record<string, unknown>) => {
-  // if (query?.rating) {
-  //   const ratingValue = parseFloat(query?.rating);
-  //   console.log('Parsed Rating Value:', ratingValue);
-
-  //   // Define a small tolerance for floating-point comparison
-  //   const tolerance = 0.1;
-
-  //   const result = await Product.find({
-  //     rating: { $gte: ratingValue - tolerance, $lte: ratingValue + tolerance },
-  //   });
-  //   return result;
-  // }
-
   if (query.searchTerm === '' && query.minPrice && query.maxPrice) {
     const result = Product.find({
       price: {
@@ -57,8 +44,14 @@ const getCategoryProducts = async (category: string) => {
   return result;
 };
 
+const getSingleProductsFromDB = async (id: string) => {
+  const result = await Product.findById(id);
+  return result;
+};
+
 export const ProductsServices = {
   getAllProducts,
   getCategoryProducts,
   getAllProductsFromDB,
+  getSingleProductsFromDB,
 };

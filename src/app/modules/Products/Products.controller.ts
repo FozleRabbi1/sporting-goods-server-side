@@ -35,8 +35,19 @@ const getCategoryProducts = catchAsync(async (req, res) => {
   });
 });
 
+const getSingleProducts = catchAsync(async (req, res) => {
+  const result = await ProductsServices.getSingleProductsFromDB(req?.params.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Get Single Products Successfully',
+    data: result,
+  });
+});
+
 export const productsControllers = {
   getAllProducts,
   getCategoryProducts,
   getALlProductsFromDb,
+  getSingleProducts,
 };
