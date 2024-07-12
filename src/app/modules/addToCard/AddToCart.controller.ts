@@ -13,6 +13,17 @@ const addToCart = catchAsync(async (req, res) => {
   });
 });
 
+const getAddToCart = catchAsync(async (req, res) => {
+  const result = await addToCartServices.getCartProductFromDB();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'AddtoCart Product get SuccessFully ',
+    data: result,
+  });
+});
+
 export const addToCartControllers = {
   addToCart,
+  getAddToCart,
 };
