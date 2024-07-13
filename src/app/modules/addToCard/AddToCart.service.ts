@@ -21,24 +21,30 @@ const addToCartIntoDB = async (payload: any) => {
   return result;
 };
 
-const getCartProductFromDB = async (incrementDecrement) => {
+const getCartProductFromDB = async (incrementDecrement: string) => {
   const incrementDecrementValue = JSON.parse(incrementDecrement);
   const updatedData = await AddToCart.findById(incrementDecrementValue.id);
   if (incrementDecrementValue.increment) {
     await AddToCart.findByIdAndUpdate(incrementDecrementValue.id, {
-      addedProduct: updatedData.addedProduct + 1,
+      addedProduct: (updatedData!.addedProduct as number) + 1,
     });
   }
   if (incrementDecrementValue.decrement) {
     await AddToCart.findByIdAndUpdate(incrementDecrementValue.id, {
-      addedProduct: updatedData.addedProduct - 1,
+      addedProduct: (updatedData!.addedProduct as number) - 1,
     });
   }
   const result = await AddToCart.find();
   return result;
 };
 
+const deleteCartIntoDB = async (id: string) => {
+  const result = await AddToCart.findByIdAndDelete(id);
+  return result;
+};
+
 export const addToCartServices = {
   addToCartIntoDB,
   getCartProductFromDB,
+  deleteCartIntoDB,
 };

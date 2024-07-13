@@ -15,8 +15,19 @@ const addToCart = catchAsync(async (req, res) => {
 
 const getAddToCart = catchAsync(async (req, res) => {
   const incrementDecrement = req.query.incrementDecrement;
-  const result =
-    await addToCartServices.getCartProductFromDB(incrementDecrement);
+  const result = await addToCartServices.getCartProductFromDB(
+    incrementDecrement as string,
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'AddtoCart Product get SuccessFully ',
+    data: result,
+  });
+});
+
+const deleteCart = catchAsync(async (req, res) => {
+  const result = await addToCartServices.deleteCartIntoDB(req.params.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -28,4 +39,5 @@ const getAddToCart = catchAsync(async (req, res) => {
 export const addToCartControllers = {
   addToCart,
   getAddToCart,
+  deleteCart,
 };

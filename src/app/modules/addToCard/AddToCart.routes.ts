@@ -4,6 +4,7 @@ import { addToCartControllers } from './AddToCart.controller';
 const router = express.Router();
 
 router.get('/', addToCartControllers.getAddToCart);
+router.delete('/:id', addToCartControllers.deleteCart);
 router.post('/addToCart', addToCartControllers.addToCart);
 
 export const addToCartRouter = router;
