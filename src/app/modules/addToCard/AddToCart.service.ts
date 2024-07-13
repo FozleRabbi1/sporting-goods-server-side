@@ -22,7 +22,18 @@ const addToCartIntoDB = async (payload: any) => {
 };
 
 const getCartProductFromDB = async (incrementDecrement) => {
-  console.log(25, JSON.parse(incrementDecrement));
+  const incrementDecrementValue = JSON.parse(incrementDecrement);
+  const updatedData = await AddToCart.findById(incrementDecrementValue.id);
+  if (incrementDecrementValue.increment) {
+    await AddToCart.findByIdAndUpdate(incrementDecrementValue.id, {
+      addedProduct: updatedData.addedProduct + 1,
+    });
+  }
+  if (incrementDecrementValue.decrement) {
+    await AddToCart.findByIdAndUpdate(incrementDecrementValue.id, {
+      addedProduct: updatedData.addedProduct - 1,
+    });
+  }
   const result = await AddToCart.find();
   return result;
 };
