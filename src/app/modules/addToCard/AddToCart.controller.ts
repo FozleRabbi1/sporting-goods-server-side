@@ -14,7 +14,9 @@ const addToCart = catchAsync(async (req, res) => {
 });
 
 const getAddToCart = catchAsync(async (req, res) => {
-  const result = await addToCartServices.getCartProductFromDB();
+  const incrementDecrement = req.query.incrementDecrement;
+  const result =
+    await addToCartServices.getCartProductFromDB(incrementDecrement);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

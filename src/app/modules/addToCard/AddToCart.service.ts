@@ -21,7 +21,8 @@ const addToCartIntoDB = async (payload: any) => {
   return result;
 };
 
-const getCartProductFromDB = async () => {
+const getCartProductFromDB = async (incrementDecrement) => {
+  console.log(25, JSON.parse(incrementDecrement));
   const result = await AddToCart.find();
   return result;
 };
