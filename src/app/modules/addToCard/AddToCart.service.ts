@@ -66,18 +66,18 @@ const deleteCartIntoDB = async (id: string) => {
 //   console.log(updateData);
 // };
 
-const checkOutQueryIntoDB = async (payload) => {
+const checkOutQueryIntoDB = async (payload: any) => {
   try {
-    const mainIds = Array.isArray(payload.mainId)
-      ? payload.mainId
-      : [payload.mainId];
-    const orderedCounts = Array.isArray(payload.addedProduct)
-      ? payload.addedProduct
-      : [payload.addedProduct];
+    const mainIds = Array.isArray(payload[0].mainId)
+      ? payload[0].mainId
+      : [payload[0].mainId];
+    const orderedCounts = Array.isArray(payload[0].addedProduct)
+      ? payload[0].addedProduct
+      : [payload[0].addedProduct];
 
-    const cartIds = Array.isArray(payload.cartId)
-      ? payload.cartId
-      : [payload.cartId];
+    const cartIds = Array.isArray(payload[0].cartId)
+      ? payload[0].cartId
+      : [payload[0].cartId];
 
     const products = await Product.find({ _id: { $in: mainIds } });
     const updatePromises = products.map((product, i) => {

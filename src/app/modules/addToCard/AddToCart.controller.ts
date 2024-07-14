@@ -35,16 +35,42 @@ const deleteCart = catchAsync(async (req, res) => {
 });
 
 const checkOutQuery = catchAsync(async (req, res) => {
-  const data = req?.query?.data[0];
-  // console.log(39, typeof data);
-  const result = await addToCartServices.checkOutQueryIntoDB(data);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'AddtoCart Product get SuccessFully ',
-    data: result,
-  });
+  try {
+    // Ensure req.query.data exists
+    const data = req.query.data;
+
+    if (!data) {
+      throw new Error('Data is missing in the query');
+    }
+
+    // Parse the data
+    const parsedData = Array.isArray(data)
+      ? data.map((item) => (typeof item === 'string' ? JSON.parse(item) : item))
+      : [typeof data === 'string' ? JSON.parse(data) : data];
+
+    const result = await addToCartServices.checkOutQueryIntoDB(parsedData);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'AddtoCart Product get Successfully',
+      data: result,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 });
+
+// const checkOutQuery = catchAsync(async (req, res) => {
+//   const data = req?.query?.data[0];
+//   // console.log(39, typeof data);
+//   const result = await addToCartServices.checkOutQueryIntoDB(data);
+//   sendResponse(res, {
+//     statusCode: httpStatus.OK,
+//     success: true,
+//     message: 'AddtoCart Product get SuccessFully ',
+//     data: result,
+//   });
+// });
 
 export const addToCartControllers = {
   addToCart,
