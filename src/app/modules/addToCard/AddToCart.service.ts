@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Product } from '../Products/Products.module';
 import { AddToCart } from './AddToCart.module';
 
 const addToCartIntoDB = async (payload: any) => {
@@ -57,8 +58,44 @@ const deleteCartIntoDB = async (id: string) => {
   return result;
 };
 
+// const checkOutQueryIntoDB = async (payload) => {
+//   const mainIds = payload.mainId;
+//   const orderedCount = payload.addedProduct;
+//   const products = await Product.find({ _id: { $in: mainIds } });
+//   const updateData = await products.forEach({item, i} => item.stockQuantity - parseFloat(orderedCount[i]) )
+//   console.log(updateData);
+// };
+
+const checkOutQueryIntoDB = async (payload) => {
+  try {
+    const mainIds = Array.isArray(payload.mainId)
+      ? payload.mainId
+      : [payload.mainId];
+    const orderedCounts = Array.isArray(payload.addedProduct)
+      ? payload.addedProduct
+      : [payload.addedProduct];
+
+    const cartIds = Array.isArray(payload.cartId)
+      ? payload.cartId
+      : [payload.cartId];
+
+    const products = await Product.find({ _id: { $in: mainIds } });
+    const updatePromises = products.map((product, i) => {
+      const orderedCount = parseFloat(orderedCounts[i]);
+      product.stockQuantity -= orderedCount;
+      return product.save();
+    });
+
+    await Promise.all(updatePromises);
+    await AddToCart.deleteMany({ _id: { $in: cartIds } });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const addToCartServices = {
   addToCartIntoDB,
   getCartProductFromDB,
   deleteCartIntoDB,
+  checkOutQueryIntoDB,
 };
