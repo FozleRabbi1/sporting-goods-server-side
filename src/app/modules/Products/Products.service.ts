@@ -46,6 +46,14 @@ const deleteProductfromDB = async (id: string) => {
   const result = await Product.findByIdAndDelete(id);
   return result;
 };
+const updateProductIntoDB = async (id: string, payload: Partial<IProduct>) => {
+  const result = await Product.findByIdAndUpdate(
+    id,
+    { $set: payload },
+    { new: true, runValidators: true },
+  );
+  return result;
+};
 
 export const ProductsServices = {
   getAllProducts,
@@ -54,4 +62,5 @@ export const ProductsServices = {
   getSingleProductsFromDB,
   createProductIntoDB,
   deleteProductfromDB,
+  updateProductIntoDB,
 };

@@ -1,9 +1,20 @@
 import express from 'express';
 import { productsControllers } from './Products.controller';
+import { validateRequest } from '../../middleware/validateRequest';
+import { ProductValidationSchema } from './Products.validation';
 
 const router = express.Router();
 
-router.post('/', productsControllers.createProduct);
+router.patch(
+  '/',
+  validateRequest(ProductValidationSchema.UpdateProductSchema),
+  productsControllers.updateProduct,
+);
+router.post(
+  '/',
+  validateRequest(ProductValidationSchema.ProductSchema),
+  productsControllers.createProduct,
+);
 router.get('/all-products', productsControllers.getALlProductsFromDb);
 router.get('/', productsControllers.getAllProducts);
 router.get('/:category', productsControllers.getCategoryProducts);
