@@ -3,7 +3,7 @@ export type IProduct = {
   category: string;
   stockQuantity: number;
   brand: string;
-  rating: number;
+  rating?: number;
   description: string;
   price: number;
   image: string;

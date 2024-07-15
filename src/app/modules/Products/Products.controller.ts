@@ -45,9 +45,33 @@ const getSingleProducts = catchAsync(async (req, res) => {
   });
 });
 
+const createProduct = catchAsync(async (req, res) => {
+  const result = await ProductsServices.createProductIntoDB(req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Product create Successfully',
+    data: result,
+  });
+});
+
+const deleteProduct = catchAsync(async (req, res) => {
+  const result = await ProductsServices.deleteProductfromDB(
+    req?.params.id as string,
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Product create Successfully',
+    data: result,
+  });
+});
+
 export const productsControllers = {
   getAllProducts,
   getCategoryProducts,
   getALlProductsFromDb,
   getSingleProducts,
+  createProduct,
+  deleteProduct,
 };

@@ -1,4 +1,5 @@
 import QueryBuilder from '../../builder/QueryBuilder';
+import { IProduct } from './Products.interface';
 import { Product } from './Products.module';
 
 const getAllProducts = async () => {
@@ -20,11 +21,9 @@ const getAllProductsFromDB = async (query: Record<string, unknown>) => {
     searchTerm: query.searchTerm,
   })
     .search(['name', 'brand'])
-    .fields()
-    .filter()
-    .paginate()
-    .sort();
+    .fields();
   const result = await courseQuery.modelQuery;
+
   return result;
 };
 
@@ -38,9 +37,21 @@ const getSingleProductsFromDB = async (id: string) => {
   return result;
 };
 
+const createProductIntoDB = async (payload: IProduct) => {
+  const result = await Product.create(payload);
+  return result;
+};
+
+const deleteProductfromDB = async (id: string) => {
+  const result = await Product.findByIdAndDelete(id);
+  return result;
+};
+
 export const ProductsServices = {
   getAllProducts,
   getCategoryProducts,
   getAllProductsFromDB,
   getSingleProductsFromDB,
+  createProductIntoDB,
+  deleteProductfromDB,
 };
