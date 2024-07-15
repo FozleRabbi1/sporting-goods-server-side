@@ -51,12 +51,15 @@ class QueryBuilder<T> {
   //   return this;
   // }
 
-  sort() {
-    const sort =
-      (this?.query?.sort as string)?.split(',')?.join(' ') || '-createdAt';
-    this.modelQuery = this.modelQuery.sort(sort as string);
-    return this;
-  }
+  // sort(sortt) {
+  //   // const sort =
+  //   //   (this?.query?.sort as string)?.split(',')?.join(' ') || '-createdAt';
+  //   console.log(sortt);
+  //   const assenDessenSort = sortt === 'ascending' ? -1 : 1;
+
+  //   this.modelQuery = this.modelQuery.sort(assenDessenSort);
+  //   return this;
+  // }
 
   paginate() {
     const page = Number(this?.query?.page) || 1;

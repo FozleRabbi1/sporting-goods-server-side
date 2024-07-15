@@ -4,17 +4,42 @@ import { Product } from './Products.module';
 
 const getAllProducts = async () => {
   const result = await Product.find();
-  return result;
+  return result.reverse();
 };
 
+// const getAllProductsFromDB = async (query: Record<string, unknown>) => {
+//   // const assenDessen = query?.sorting || '-createdAt';
+//   console.log(12, query.sort);
+//   if (query.searchTerm === '' && query.minPrice && query.maxPrice) {
+//     const result = Product.find({
+//       price: {
+//         $gte: parseInt(query?.minPrice as string),
+//         $lte: parseInt(query?.maxPrice as string),
+//       },
+//     });
+//     return result;
+//   }
+//   const courseQuery = new QueryBuilder(Product.find(), {
+//     searchTerm: query.searchTerm,
+//   })
+//     .search(['name', 'brand'])
+//     .fields()
+//   const result = await courseQuery.modelQuery;
+
+//   return result;
+// };
+
 const getAllProductsFromDB = async (query: Record<string, unknown>) => {
+  // Default to sorting by price in ascending order if no sort option is provided
+  const sortOption = query?.sort === 'descending' ? -1 : 1;
+
   if (query.searchTerm === '' && query.minPrice && query.maxPrice) {
     const result = Product.find({
       price: {
         $gte: parseInt(query?.minPrice as string),
         $lte: parseInt(query?.maxPrice as string),
       },
-    });
+    }).sort({ price: sortOption }); // Adding sort here
     return result;
   }
   const courseQuery = new QueryBuilder(Product.find(), {
@@ -22,8 +47,9 @@ const getAllProductsFromDB = async (query: Record<string, unknown>) => {
   })
     .search(['name', 'brand'])
     .fields();
+  // Adding sort to the QueryBuilder query
+  courseQuery.modelQuery.sort({ price: sortOption });
   const result = await courseQuery.modelQuery;
-
   return result;
 };
 
