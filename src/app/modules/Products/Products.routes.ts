@@ -6,7 +6,7 @@ import { ProductValidationSchema } from './Products.validation';
 const router = express.Router();
 
 router.patch(
-  '/',
+  '/update',
   validateRequest(ProductValidationSchema.UpdateProductSchema),
   productsControllers.updateProduct,
 );

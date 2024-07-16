@@ -37,18 +37,16 @@ const deleteCart = catchAsync(async (req, res) => {
 const checkOutQuery = catchAsync(async (req, res) => {
   try {
     // Ensure req.query.data exists
-    const data = req.query.data;
-
+    const data = req.body;
     if (!data) {
       throw new Error('Data is missing in the query');
     }
 
-    // Parse the data
-    const parsedData = Array.isArray(data)
-      ? data.map((item) => (typeof item === 'string' ? JSON.parse(item) : item))
-      : [typeof data === 'string' ? JSON.parse(data) : data];
+    // const parsedData = Array.isArray(data)
+    //   ? data.map((item) => (typeof item === 'string' ? JSON.parse(item) : item))
+    //   : [typeof data === 'string' ? JSON.parse(data) : data];
 
-    const result = await addToCartServices.checkOutQueryIntoDB(parsedData);
+    const result = await addToCartServices.checkOutQueryIntoDB(data);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,

@@ -42,6 +42,7 @@ const getAllProductsFromDB = async (query: Record<string, unknown>) => {
     }).sort({ price: sortOption }); // Adding sort here
     return result;
   }
+
   const courseQuery = new QueryBuilder(Product.find(), {
     searchTerm: query.searchTerm,
   })

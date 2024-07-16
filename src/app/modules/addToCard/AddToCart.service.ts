@@ -66,26 +66,21 @@ const deleteCartIntoDB = async (id: string) => {
 //   console.log(updateData);
 // };
 
-const checkOutQueryIntoDB = async (payload: any) => {
+const checkOutQueryIntoDB = async (payload: any[]) => {
   try {
-    const mainIds = Array.isArray(payload[0].mainId)
-      ? payload[0].mainId
-      : [payload[0].mainId];
-    const orderedCounts = Array.isArray(payload[0].addedProduct)
-      ? payload[0].addedProduct
-      : [payload[0].addedProduct];
-
-    const cartIds = Array.isArray(payload[0].cartId)
-      ? payload[0].cartId
-      : [payload[0].cartId];
-
+    const mainIds = payload.map((item) => item.mainId);
+    const cartIds = payload.map((item) => item.cartId);
     const products = await Product.find({ _id: { $in: mainIds } });
-    const updatePromises = products.map((product, i) => {
-      const orderedCount = parseFloat(orderedCounts[i]);
-      product.stockQuantity -= orderedCount;
-      return product.save();
+    const updatePromises = products.map((product) => {
+      const orderedItem = payload.find(
+        (item) => item.mainId === product._id.toString(),
+      );
+      if (orderedItem) {
+        const orderedCount = parseFloat(orderedItem.addedProduct);
+        product.stockQuantity -= orderedCount;
+        return product.save();
+      }
     });
-
     await Promise.all(updatePromises);
     await AddToCart.deleteMany({ _id: { $in: cartIds } });
   } catch (error) {
